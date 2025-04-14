@@ -81,6 +81,61 @@ document.addEventListener("DOMContentLoaded", function () {
           alert('There was an error sending your order. Please try again.');
           console.error('EmailJS error:', error);
         });
+      document.addEventListener("DOMContentLoaded", function () {
+
+  // Add item to cart and save to localStorage
+  function addToCart(productName, price) {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart.push({ name: productName, price });
+    localStorage.setItem('cart', JSON.stringify(cart));
+    window.location.href = 'added.html';  // Redirect to "Item Added" confirmation page
+  }
+
+  // Add event listener to Add to Cart button
+  const addToCartButtons = document.querySelectorAll('.add-to-cart');
+  addToCartButtons.forEach(button => {
+    button.addEventListener('click', function () {
+      const productName = button.getAttribute('data-product-name');
+      const productPrice = parseFloat(button.getAttribute('data-price'));
+      addToCart(productName, productPrice);
+    });
+  });
+
+  // Load items into cart page and calculate total
+  function loadCart() {
+    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartList = document.getElementById('cart-items');
+    const totalEl = document.getElementById('cart-total');
+    let total = 0;
+
+    cartList.innerHTML = ''; // Clear current cart items
+
+    cartItems.forEach((item, index) => {
+      const li = document.createElement('li');
+      li.innerHTML = `${item.name} - $${item.price.toFixed(2)} 
+                      <button onclick="removeFromCart(${index})">Remove</button>`;
+      cartList.appendChild(li);
+      total += item.price;
+    });
+
+    totalEl.textContent = total.toFixed(2);  // Update total price
+  }
+
+  // Remove item from cart and update total
+  function removeFromCart(index) {
+    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    cartItems.splice(index, 1); // Remove item by index
+    localStorage.setItem('cart', JSON.stringify(cartItems));  // Update localStorage
+    loadCart(); // Re-render cart
+  }
+
+  // Checkout page: load cart on page load
+  if (window.location.pathname.includes('cart.html')) {
+    loadCart();
+  }
+
+});
+
     });
   }
 
