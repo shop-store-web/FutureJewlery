@@ -5,21 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FutureJewelry</title>
   <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
 <body>
   <header>
     <h1>FutureJewelry</h1>
     <p>Timeless Luxury for the Future</p>
+    <a href="cart.html" class="cart-link" title="View Cart">
+      🛒
+    </a>
   </header>
 
   <main>
     <section class="product">
-      <img src="Watch1.jpg" alt="Men's Golden Watch">
+      <img src="Watch1.png" alt="Men's Golden Watch">
       <div class="product-info">
         <h2>Men's Golden Watch</h2>
         <p>A sleek and elegant timepiece for the modern man. Crafted with precision and gold-plated excellence.</p>
         <span class="price">$299.99</span>
-        <button>Add to Cart</button>
+        <button onclick="addToCart('Men\'s Golden Watch', 299.99)">Buy Now</button>
       </div>
     </section>
   </main>
