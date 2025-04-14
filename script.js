@@ -1,21 +1,23 @@
+// Add item to cart and redirect to confirmation
 function addToCart(productName, price) {
   const cart = JSON.parse(localStorage.getItem('cart')) || [];
   cart.push({ name: productName, price });
   localStorage.setItem('cart', JSON.stringify(cart));
-  alert(`${productName} added to cart!`);
+  window.location.href = 'added.html';
 }
 
+// Load items into cart.html
 function loadCart() {
   const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
   const cartList = document.getElementById('cart-items');
-  const totalEl = document.getElementById('total');
+  const totalEl = document.getElementById('cart-total');
   let total = 0;
 
   cartList.innerHTML = '';
 
-  cartItems.forEach(item => {
+  cartItems.forEach((item, index) => {
     const li = document.createElement('li');
-    li.textContent = `${item.name} - $${item.price.toFixed(2)}`;
+    li.innerHTML = `${item.name} - $${item.price.toFixed(2)} <button onclick="removeFromCart(${index})">Remove</button>`;
     cartList.appendChild(li);
     total += item.price;
   });
@@ -23,15 +25,15 @@ function loadCart() {
   totalEl.textContent = total.toFixed(2);
 }
 
-function checkout() {
-  alert('Thank you for your purchase!');
-  localStorage.removeItem('cart');
-  window.location.href = 'index.html';
+// Remove item from cart
+function removeFromCart(index) {
+  const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+  cartItems.splice(index, 1);
+  localStorage.setItem('cart', JSON.stringify(cartItems));
+  loadCart();
 }
 
-// If on cart page, load cart
-if (window.location.pathname.includes('cart.html')) {
-  window.addEventListener('DOMContentLoaded', loadCart);
+// Load checkout summary
 function loadCheckout() {
   const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
   const checkoutList = document.getElementById('checkout-items');
@@ -57,6 +59,7 @@ function loadCheckout() {
   document.getElementById('hidden-total').value = `$${total.toFixed(2)}`;
 }
 
+// Submit checkout form using EmailJS
 const form = document.getElementById('checkout-form');
 if (form) {
   form.addEventListener('submit', function (e) {
@@ -64,11 +67,8 @@ if (form) {
 
     emailjs.sendForm('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', this)
       .then(function () {
-        // Hide form, show confirmation message
         form.style.display = 'none';
         document.getElementById('confirmation-message').style.display = 'block';
-
-        // Clear cart
         localStorage.removeItem('cart');
       }, function (error) {
         alert('There was an error sending your order. Please try again.');
@@ -77,7 +77,13 @@ if (form) {
   });
 }
 
+// Page-specific loaders
+if (window.location.pathname.includes('cart.html')) {
+  window.addEventListener('DOMContentLoaded', loadCart);
+}
+
 if (window.location.pathname.includes('checkout.html')) {
   window.addEventListener('DOMContentLoaded', loadCheckout);
 }
+
 
