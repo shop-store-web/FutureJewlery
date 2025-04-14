@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Cart - FutureJewelry</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>Your Cart</h1>
+    <a href="index.html" class="cart-link" title="Back to Shop">
+      ⬅ Back
+    </a>
+  </header>
+
+  <main>
+    <div id="cart-container">
+      <ul id="cart-items"></ul>
+      <div class="cart-summary">
+        <strong>Total: $<span id="total">0.00</span></strong>
+        <button onclick="checkout()">Checkout</button>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 FutureJewelry. All rights reserved.</p>
+  </footer>
+</body>
+</html>
